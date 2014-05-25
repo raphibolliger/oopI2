@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
+import java.io.*;
 
 public class GUI extends JFrame {
 
@@ -34,6 +34,24 @@ public class GUI extends JFrame {
             public void actionPerformed(ActionEvent e)
             {
                 showInfo();
+            }
+        });
+        buttonshowDirectory.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showDir();
+            }
+        });
+        buttonUseFileReader.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showFile1();
+            }
+        });
+        buttonUseBufferedReader.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showFile2();
             }
         });
 
@@ -81,12 +99,109 @@ public class GUI extends JFrame {
                 if (theFile.canWrite())
                     textAreaOutput.append("Kann geschrieben werden \n");
             }
+            else
+            {
+                textFieldErrorMessage.setText("Datei oder Pfad exisitert nicht.");
+            }
         }
         catch (Exception e1)
         {
             textFieldErrorMessage.setText("Fehler! " + e1.getMessage());
         }
+    }
 
+    private void showDir()
+    {
+        textAreaOutput.setText("");
+        textFieldErrorMessage.setText("");
 
+        String filename = textFieldName.getText();
+        File theFile = new File(filename);
+
+        try
+        {
+            if (theFile.exists())
+            {
+                if (theFile.isDirectory())
+                {
+                    String[] list = theFile.list();
+
+                    for (String aList : list) {
+                        textAreaOutput.append(aList + "\n");
+                    }
+                }
+                else
+                {
+                    textFieldErrorMessage.setText("Dieser Pfad ist kein Directory");
+                }
+            }
+            else
+            {
+                textFieldErrorMessage.setText("Dieser Pfad exisitert nicht");
+            }
+        }
+        catch (Exception e2)
+        {
+            textFieldErrorMessage.setText("Fehler! "+ e2.getMessage());
+        }
+    }
+
+    private void showFile1()
+    {
+        textAreaOutput.setText("");
+        textFieldErrorMessage.setText("");
+
+        String filename = textFieldName.getText();
+
+        try
+        {
+            FileReader filereader = new FileReader(filename);
+            int ascii;
+
+            do
+            {
+                ascii = filereader.read();
+                char b = (char) ascii;
+                textAreaOutput.append(""+b);
+
+            } while (ascii >= 0);
+        }
+        catch (FileNotFoundException e1)
+        {
+            textFieldErrorMessage.setText("Das File wurde nicht gefunden");
+        }
+        catch (IOException e)
+        {
+            textFieldErrorMessage.setText("Das File konnte nicht gelesen werden");
+        }
+    }
+
+    private void showFile2()
+    {
+        textAreaOutput.setText("");
+        textFieldErrorMessage.setText("");
+
+        String filename = textFieldName.getText();
+
+        try
+        {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(filename));
+            String line;
+
+            do
+            {
+                line = bufferedReader.readLine();
+                textAreaOutput.append(line);
+                textAreaOutput.append("\n");
+            } while (line != null);
+        }
+        catch (FileNotFoundException e1)
+        {
+            textFieldErrorMessage.setText("Das File wurde nicht gefunden");
+        }
+        catch (IOException e)
+        {
+            textFieldErrorMessage.setText("Das File konnte nicht gelesen werden");
+        }
     }
 }
