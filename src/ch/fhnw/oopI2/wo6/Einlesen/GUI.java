@@ -54,6 +54,13 @@ public class GUI extends JFrame {
                 showFile2();
             }
         });
+        buttonSaveText.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+
+            }
+        });
 
         // add all components to the top panel
         top.add(new JLabel("Name:"));
