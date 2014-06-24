@@ -1,4 +1,4 @@
-package ch.fhnw.oopI2.MSPUEB.aufgabe01;
+package ch.fhnw.oopI2.MSPUEB.u01.aufgabe01;
 
 //******************************************************************************
 //  Stack-based calculator                                                vtg  *
